@@ -1,6 +1,9 @@
+import ContextMenu from "@/components/menu/ContextMenu";
 import Navbar from "@/components/navbar";
 import PageTransition from "@/components/transition/PageTransition";
+import ThemeTransition from "@/components/transition/ThemeTransition";
 import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -26,11 +29,15 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <PageTransition>
-                    <Navbar />
-                    {children}
-                </PageTransition>
+            <body className={`${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-500`}>
+                <ThemeProvider attribute="class" defaultTheme="light">
+                    <ThemeTransition />
+                    <PageTransition>
+                        <Navbar />
+                        <ContextMenu />
+                        {children}
+                    </PageTransition>
+                </ThemeProvider>
             </body>
         </html>
     );

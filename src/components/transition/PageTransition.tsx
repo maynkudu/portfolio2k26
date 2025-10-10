@@ -11,7 +11,7 @@ const PageTransition = ({ children }: { children: ReactNode }) => {
     const pathname = usePathname();
     const overlayRef = useRef<HTMLDivElement | null>(null);
     const blocksRef = useRef<HTMLDivElement[]>([]);
-    const isTransitioning = useRef<Boolean>(false);
+    const isTransitioning = useRef<boolean>(false);
 
     useEffect(() => {
         const createBlocks = () => {
