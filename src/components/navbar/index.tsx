@@ -20,7 +20,7 @@ const NavRoutes = [
 const Navbar = () => {
     return (
         <div>
-            <ul>
+            <ul className="flex justify-center gap-5">
                 {NavRoutes.map((route, index) => (
                     <li key={index}>
                         <Link href={route.href}>{route.title}</Link>

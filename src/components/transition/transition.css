@@ -1,0 +1,14 @@
+.transition-overlay {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.transition-overlay .block {
+    background: black;
+    transform: scaleX(0);
+    transform-origin: left;
+}
