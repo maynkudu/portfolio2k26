@@ -224,9 +224,11 @@ function MenuItem({ icon, label, onClick }: MenuItemProps) {
                 opacity: 0,
                 duration: 0.05,
                 ease: "power3.out",
+                onComplete: () => {
+                    onClick?.();
+                },
             });
         }
-        onClick?.();
     };
 
     return (
