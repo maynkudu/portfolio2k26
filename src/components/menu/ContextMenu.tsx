@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { BsArrowLeft } from "react-icons/bs";
 import { HiMoon, HiRefresh, HiSun, HiX } from "react-icons/hi";
 
 export default function ContextMenu() {
@@ -46,33 +47,31 @@ export default function ContextMenu() {
                         ease: "power3.out",
                     });
 
-                    // Slide in
-                    gsap.fromTo(
+                    const tl = gsap.timeline();
+
+                    tl.fromTo(
                         items,
-                        { x: -10, opacity: 0, color: "#ffffff40" },
+                        { x: -50, opacity: 0, color: "#ffffff40" },
                         {
                             x: 0,
                             opacity: 1,
-                            color: "#ffffffb0",
-                            duration: 0.5,
-                            stagger: 0.1,
+                            color: "#ffffff",
+                            duration: 0.8,
+                            stagger: 0.2,
                             ease: "power2.out",
                         }
                     );
 
-                    // Icon spin-in
-                    items.forEach(item => {
+                    tl.to(items, { color: "#ffffffb0", duration: 0.3, ease: "none" });
+
+                    items.forEach((item, i) => {
                         const icon = item.querySelector(".icon svg");
                         if (icon) {
-                            gsap.fromTo(
+                            tl.fromTo(
                                 icon,
-                                { rotate: -60, opacity: 0 },
-                                {
-                                    rotate: 0,
-                                    opacity: 1,
-                                    duration: 0.4,
-                                    ease: "power2.out",
-                                }
+                                { rotate: -180, opacity: 0 },
+                                { rotate: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+                                i * 0.2
                             );
                         }
                     });
@@ -133,18 +132,20 @@ export default function ContextMenu() {
             {isVisible && (
                 <div
                     ref={menuRef}
-                    className="fixed z-[9999] bg-zinc-900 text-white shadow-lg rounded-xl w-48 p-2 border border-zinc-800 origin-top-left"
+                    className="fixed z-[9999] bg-zinc-900 text-white shadow-lg rounded-xl w-48 p-2 flex flex-col justify-between gap-1 border border-zinc-800 origin-top-left overflow-hidden"
                     style={{
                         top: `${menuPosition.y}px`,
                         left: `${menuPosition.x}px`,
                     }}
                 >
                     <MenuItem icon={<HiRefresh />} label="Refresh" onClick={() => router.refresh()} />
+                    <MenuItem icon={<BsArrowLeft />} label="Back" onClick={() => router.back()} />
                     <MenuItem
                         icon={resolvedTheme === "dark" ? <HiSun /> : <HiMoon />}
                         label={resolvedTheme === "dark" ? "Light Mode" : "Dark Mode"}
                         onClick={toggleTheme}
                     />
+                    <div className="h-[0.1rem] bg-white/10 w-full"></div>
                     <MenuItem icon={<HiX />} label="Close" />
                 </div>
             )}
@@ -179,9 +180,9 @@ function MenuItem({ icon, label, onClick }: MenuItemProps) {
             });
 
             gsap.to(iconEl, {
-                rotate: 12,
+                rotate: 45,
                 scale: 1.1,
-                duration: 0.25,
+                duration: 0.5,
                 ease: "power2.out",
                 overwrite: "auto",
             });
@@ -234,7 +235,7 @@ function MenuItem({ icon, label, onClick }: MenuItemProps) {
     return (
         <div
             ref={itemRef}
-            className="px-4 py-2 flex items-center gap-3 rounded-lg cursor-pointer select-none"
+            className="px-4 py-2 flex items-center gap-5 rounded-lg cursor-pointer select-none"
             onClick={handleClick}
         >
             <span ref={iconRef} className="icon flex items-center justify-center">
