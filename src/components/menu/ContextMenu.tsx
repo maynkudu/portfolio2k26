@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { BsArrowLeft } from "react-icons/bs";
+import { Bs0Circle, BsArrowLeft } from "react-icons/bs";
 import { HiMoon, HiRefresh, HiSun, HiX } from "react-icons/hi";
 
 export default function ContextMenu() {
@@ -145,6 +145,9 @@ export default function ContextMenu() {
                         label={resolvedTheme === "dark" ? "Light Mode" : "Dark Mode"}
                         onClick={toggleTheme}
                     />
+
+                    <MenuItem icon={<Bs0Circle />} label="Void" onClick={() => router.push("/404")} />
+
                     <div className="h-[0.1rem] bg-white/10 w-full"></div>
                     <MenuItem icon={<HiX />} label="Close" />
                 </div>

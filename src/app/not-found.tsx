@@ -1,34 +1,18 @@
 "use client";
 
-import gsap from "gsap";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
 
 export default function NotFound() {
-    const containerRef = useRef<HTMLDivElement | null>(null);
+    // const router = useRouter();
+    // const pathname = usePathname();
 
-    useEffect(() => {
-        if (!containerRef.current) return;
-
-        // Animate the digits of "404"
-        const digits = containerRef.current.querySelectorAll(".digit");
-        gsap.fromTo(
-            digits,
-            { y: -200, opacity: 0 },
-            {
-                y: 0,
-                opacity: 1,
-                stagger: 0.2,
-                duration: 1.2,
-                ease: "power4.out",
-            }
-        );
-    }, []);
+    // if (pathname !== "/404") router.push("/404");
+    // const containerRef = useRef<HTMLDivElement | null>(null);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-900 to-indigo-800 text-white p-6">
-            <div ref={containerRef} className="flex flex-col items-center justify-center text-center w-full">
-                <div className="flex flex-col md:flex-row items-center justify-center">
+        <div className="flex flex-col items-center justify-center min-h-screen p-6">
+            <div className="flex flex-col items-center justify-center text-center w-full">
+                <div className="flex flex-col md:flex-row items-center justify-center font-bebas">
                     <span className="digit text-[16rem] md:text-[24rem] leading-[1] md:leading-[1] font-bold tracking-tighter">
                         4
                     </span>

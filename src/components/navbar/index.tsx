@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const NavRoutes = [
     {
@@ -18,6 +19,11 @@ const NavRoutes = [
 ];
 
 const Navbar = () => {
+    const pathname = usePathname();
+    const knownRoutes = ["/", "/work", "/about"];
+
+    if (!knownRoutes.includes(pathname)) return;
+
     return (
         <div>
             <ul className="flex justify-center gap-5">
