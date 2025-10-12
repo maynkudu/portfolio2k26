@@ -90,7 +90,7 @@ export default function NotFound() {
         <div ref={containerRef} className="flex flex-col items-center justify-center min-h-screen p-6 overflow-hidden">
             <div
                 ref={evilRef}
-                className="absolute flex flex-col gap-2 items-center justify-center pointer-events-none opacity-0 text-foreground"
+                className="absolute flex flex-col gap-2 items-center justify-center pointer-events-none opacity-0 text-foreground z-10"
             >
                 <Button
                     href="/"
