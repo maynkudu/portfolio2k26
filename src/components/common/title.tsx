@@ -10,15 +10,11 @@ interface TitleProps {
     variant: "Slide On Scroll";
 }
 
-interface SlideOnScrollProps {
-    title: string;
-}
-
-const Title = ({ title, variant }: TitleProps) => {
+const Title = ({ title }: TitleProps) => {
     return <SlideOnScroll title={title} />;
 };
 
-const SlideOnScroll = ({ title }: SlideOnScrollProps) => {
+const SlideOnScroll = ({ title }: { title: string }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -32,36 +28,42 @@ const SlideOnScroll = ({ title }: SlideOnScrollProps) => {
         upperTitle.split("").forEach(letter => {
             const span = document.createElement("span");
             span.textContent = letter;
-            span.className = "letter relative inline-block overflow-hidden";
+            span.className = "letter relative flex justify-center  items-center bg-blue-600/0";
             container.appendChild(span);
         });
 
         const split = new SplitText(container, { type: "chars" });
 
+        // ---- ENTRY ANIMATION ----
         split.chars.forEach((char, index) => {
+            if (char.textContent === " ") return;
+
             const wrapper = document.createElement("div");
             wrapper.style.display = "inline-block";
-            // wrapper.style.overflow = "hidden";
+            wrapper.style.position = "relative";
+            wrapper.style.overflow = "visible";
             wrapper.style.height = "3em";
+            wrapper.style.marginTop = "1rem";
+            wrapper.style.marginLeft = "-0.5rem";
+            wrapper.style.marginRight = "-0.5rem";
+            wrapper.style.verticalAlign = "middle";
             char.parentNode?.replaceChild(wrapper, char);
             wrapper.appendChild(char);
 
-            const letters: HTMLElement[] = [];
-            for (let i = 0; i < 3; i++) {
+            // Duplicate letters
+            [-1, 1].forEach(offset => {
                 const dup = char.cloneNode(true) as HTMLElement;
-                dup.style.display = "block";
                 dup.style.position = "absolute";
-                dup.style.top = `${(i - 1) * 0.75}em`;
+                dup.style.left = "0";
+                dup.style.top = "0";
+                dup.style.transform = `translateY(${offset * 80}%)`;
                 wrapper.appendChild(dup);
-                letters.push(dup);
-            }
+            });
 
-            gsap.set(letters, (i: number) => ({
-                y: (i - 1) * 100,
-                opacity: i === 1 ? 1 : 0.6,
-            }));
-
-            const initialY = (Math.random() - 0.5) * 1000;
+            // Entry animation
+            const pos = 100 + Math.random() * 400;
+            const neg = -(100 + Math.random() * 400);
+            const initialY = Math.random() < 0.5 ? pos : neg;
 
             gsap.fromTo(
                 wrapper,
@@ -73,13 +75,12 @@ const SlideOnScroll = ({ title }: SlideOnScrollProps) => {
                     delay: index * 0.05,
                     onComplete: () => {
                         gsap.to(wrapper, {
-                            y: scrollY,
-                            duration: 0.2,
+                            yPercent: -30,
                             ease: "none",
                             scrollTrigger: {
                                 trigger: container,
-                                start: "top bottom",
-                                end: "bottom top",
+                                start: "top",
+                                end: "bottom",
                                 scrub: 1,
                             },
                         });
@@ -87,13 +88,31 @@ const SlideOnScroll = ({ title }: SlideOnScrollProps) => {
                 }
             );
         });
+
+        // ---- SINGLE SCROLL SCALE ANIMATION ----
+        gsap.fromTo(
+            container,
+            { scale: 1 },
+            {
+                scale: 2.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: container,
+                    start: "top +=100px",
+                    end: "bottom",
+                    scrub: 1,
+                },
+            }
+        );
+
+        ScrollTrigger.refresh();
     }, [title]);
 
     return (
-        <div className="flex justify-center items-center mt-40 overflow-hidden">
+        <div className="flex justify-center items-center mt-40 n">
             <div
                 ref={containerRef}
-                className="flex flex-wrap justify-center items-center -gap-[10em] text-[20rem] overflow-hidden max-h-[1em]"
+                className="flex flex-wrap justify-center items-center text-[18rem] overflow-hidden max-h-[1.1em]"
             />
         </div>
     );
