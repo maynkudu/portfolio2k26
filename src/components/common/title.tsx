@@ -44,8 +44,8 @@ const SlideOnScroll = ({ title }: { title: string }) => {
             wrapper.style.overflow = "visible";
             wrapper.style.height = "3em";
             wrapper.style.marginTop = "1rem";
-            wrapper.style.marginLeft = "-0.5rem";
-            wrapper.style.marginRight = "-0.5rem";
+            wrapper.style.marginLeft = "-0.3rem";
+            wrapper.style.marginRight = "-0.3rem";
             wrapper.style.verticalAlign = "middle";
             char.parentNode?.replaceChild(wrapper, char);
             wrapper.appendChild(char);
@@ -56,7 +56,7 @@ const SlideOnScroll = ({ title }: { title: string }) => {
                 dup.style.position = "absolute";
                 dup.style.left = "0";
                 dup.style.top = "0";
-                dup.style.transform = `translateY(${offset * 80}%)`;
+                dup.style.transform = `translateY(${offset * 75}%)`;
                 wrapper.appendChild(dup);
             });
 
@@ -112,7 +112,7 @@ const SlideOnScroll = ({ title }: { title: string }) => {
         <div className="flex justify-center items-center mt-40 font-bebas">
             <div
                 ref={containerRef}
-                className="flex flex-wrap justify-center items-center text-[18rem] overflow-hidden max-h-[1em]"
+                className="flex flex-wrap justify-center items-center text-[20rem] overflow-hidden max-h-[1em]"
             />
         </div>
     );
