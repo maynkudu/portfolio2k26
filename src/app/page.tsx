@@ -1,11 +1,12 @@
-import LandingPage from "@/components/home";
+"use client";
 
-const HomePage = () => {
+import HomePage from "@/components/home";
+
+export default function Page() {
     return (
-        <div className="text-7xl min-h-screen flex justify-center items-center">
-            <LandingPage />
-        </div>
+        <main className="relative min-h-screen overflow-hidden">
+            <HomePage />
+            <div className="min-h-screen">Some page</div>
+        </main>
     );
-};
-
-export default HomePage;
+}
