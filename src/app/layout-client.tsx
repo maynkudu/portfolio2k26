@@ -29,10 +29,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <ThemeProvider attribute="class" defaultTheme="light">
             <ThemeTransition />
             <PageTransition>
-                <Navbar />
+                <Navbar logo="Maynkudu" />
                 <ContextMenu />
                 <ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
-                {children}
+                <div className="bg-background ">{children}</div>
             </PageTransition>
         </ThemeProvider>
     );

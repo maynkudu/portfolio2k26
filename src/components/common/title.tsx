@@ -109,10 +109,10 @@ const SlideOnScroll = ({ title }: { title: string }) => {
     }, [title]);
 
     return (
-        <div className="flex justify-center items-center mt-40 n">
+        <div className="flex justify-center items-center mt-40 font-bebas">
             <div
                 ref={containerRef}
-                className="flex flex-wrap justify-center items-center text-[18rem] overflow-hidden max-h-[1.1em]"
+                className="flex flex-wrap justify-center items-center text-[18rem] overflow-hidden max-h-[1em]"
             />
         </div>
     );

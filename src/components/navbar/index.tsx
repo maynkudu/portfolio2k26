@@ -1,39 +1,34 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type React from "react";
+import DesktopNav from "./desktop-nav";
+import MobileNav from "./mobile-nav";
 
-const NavRoutes = [
-    {
-        title: "Home",
-        href: "/",
-    },
-    {
-        title: "About",
-        href: "/about",
-    },
-    {
-        title: "Work",
-        href: "/work",
-    },
-];
+export interface NavbarProps {
+    logo: string;
+    logoAlt?: string;
+    className?: string;
+}
 
-const Navbar = () => {
+const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
     const pathname = usePathname();
-    const knownRoutes = ["/", "/work", "/about"];
+    const validPath = ["/", "/work", "/about"];
 
-    if (!knownRoutes.includes(pathname)) return;
+    if (!validPath.includes(pathname)) return;
 
     return (
-        <div>
-            <ul className="flex justify-center gap-5">
-                {NavRoutes.map((route, index) => (
-                    <li key={index}>
-                        <Link href={route.href}>{route.title}</Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            {/* Desktop Navigation */}
+            <div className="hidden md:block">
+                <DesktopNav className={className} />
+            </div>
+
+            {/* Mobile Navigation */}
+            <div className="block md:hidden">
+                <MobileNav className={className} />
+            </div>
+        </>
     );
 };
 

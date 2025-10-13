@@ -52,7 +52,7 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${bebasNeue.variable} transition-colors duration-500 font-poppins tracking-tighter font-medium`}
+                className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${bebasNeue.variable} bg-background text-foreground transition-colors duration-500 font-poppins tracking-tighter font-medium`}
             >
                 <ClientLayout>{children}</ClientLayout>
             </body>
