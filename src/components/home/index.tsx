@@ -40,11 +40,11 @@ export default function HomePage() {
 
             // FIRST HALF: move transition div in & fade out original section
             tl.to(transitionRef.current, { x: "0vw", y: "0vh" }, 0);
-            tl.to(sectionRef.current, { scale: 0, opacity: 0 }, 0);
+            tl.to(sectionRef.current, { scale: 0.7, opacity: 0 }, 0);
 
             // SECOND HALF: move transition div out & fade in new section
             tl.to(transitionRef.current, { x: "-160vw", y: "-160vh" }, 0.5);
-            tl.fromTo(newSectionRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1 }, 0.5);
+            tl.fromTo(newSectionRef.current, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1 }, 0.5);
 
             return () => {
                 tl.scrollTrigger?.kill();
