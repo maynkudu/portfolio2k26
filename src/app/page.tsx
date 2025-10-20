@@ -6,7 +6,7 @@ export default function Page() {
     return (
         <main className="relative min-h-screen overflow-hidden">
             <HomePage />
-            <div className="min-h-screen">Some page</div>
+            <div className="min-h-screen text-foreground/90">Some page</div>
         </main>
     );
 }
