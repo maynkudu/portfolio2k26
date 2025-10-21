@@ -3,6 +3,7 @@
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { BsGithub, BsInstagram, BsLinkedin, BsTwitterX } from "react-icons/bs";
 
 export const socials = [
@@ -29,6 +30,10 @@ export const socials = [
 ];
 
 const Footer = () => {
+    const pathname = usePathname();
+    const validPath = ["/", "/work", "/about"];
+
+    if (!validPath.includes(pathname)) return;
     return (
         <div className="flex bg-foreground text-background p-10 min-h-[50svh] w-full">
             {/* Title  */}

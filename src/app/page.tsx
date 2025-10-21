@@ -1,5 +1,6 @@
 "use client";
 
+import ImageDock from "@/components/footer/image-dock";
 import HomePage from "@/components/home";
 
 export default function Page() {
@@ -7,6 +8,7 @@ export default function Page() {
         <main className="relative min-h-screen overflow-hidden">
             <HomePage />
             <div className="min-h-screen text-foreground/90 not-placeholder-shown:">Some page</div>
+            <ImageDock />
         </main>
     );
 }
