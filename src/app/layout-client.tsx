@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/footer";
 import ContextMenu from "@/components/menu/ContextMenu";
 import Navbar from "@/components/navbar";
 import PageTransition from "@/components/transition/PageTransition";
@@ -33,6 +34,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <ContextMenu />
                 <ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
                 <div className="bg-background ">{children}</div>
+                <Footer />
             </PageTransition>
         </ThemeProvider>
     );
