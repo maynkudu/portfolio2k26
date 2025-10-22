@@ -8,8 +8,9 @@ import { useRef } from "react";
 const ImageDock = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const currentIndex = useRef(null);
+
     return (
-        <div className="flex justify-center items-center gap-5 p-5">
+        <div ref={containerRef} className="flex justify-center items-center gap-5 p-5">
             {services.map((img, idx) => (
                 <div className={cn("relative", "h-80 w-80")} key={idx}>
                     <Image src={img} alt={img} className="object-cover" fill />
