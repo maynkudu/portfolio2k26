@@ -28,23 +28,28 @@ export default function HomePage() {
                     pinSpacing: true,
                     anticipatePin: 1,
                 },
-                // defaults: { ease: "power3.inOut" },
             });
 
-            // Initial position of transition div
+            // Initial setup
             gsap.set(transitionRef.current, { x: "140vw", y: "140vh", rotate: 45 });
+            gsap.set(newSectionRef.current, { x: "100vw" });
 
-            // rotate 45 → 0 → 45
-            tl.fromTo(contentRef.current, { rotate: 0, scale: 3 }, { rotate: -45, scale: 0.9 }, 0);
-            tl.fromTo(contentRef.current, { rotate: -45, scale: 0.9 }, { rotate: 0, scale: 3 }, 0.5);
+            // FIRST HALF: move transition div in
+            tl.to(transitionRef.current, { x: "0vw", y: "0vh", duration: 0.5 }, 0);
 
-            // FIRST HALF: move transition div in & fade out original section
-            tl.to(transitionRef.current, { x: "0vw", y: "0vh" }, 0);
-            tl.to(sectionRef.current, { scale: 0.7, opacity: 0 }, 0);
+            // ROTATION: complete by midpoint (0 → -45)
+            tl.fromTo(
+                contentRef.current,
+                { rotate: 0, scale: 3 },
+                { rotate: -45, scale: 0.9, duration: 0.5 }, // duration relative to timeline
+                0
+            );
 
-            // SECOND HALF: move transition div out & fade in new section
-            tl.to(transitionRef.current, { x: "-160vw", y: "-160vh" }, 0.5);
-            tl.fromTo(newSectionRef.current, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1 }, 0.5);
+            // When transition reaches ~50%, fade out first section & slide in new section
+            tl.to(sectionRef.current, { scale: 0.7, opacity: 0 }, 0.5);
+            tl.to(newSectionRef.current, { x: "0vw" }, 0.5);
+            tl.to(transitionRef.current, { scale: 0.7, x: 300, ease: "power3.out", duration: 0.6 }, 0.5);
+            tl.to(transitionRef.current, { opacity: 0, duration: 0.01 }, 0.99);
 
             return () => {
                 tl.scrollTrigger?.kill();
@@ -60,14 +65,17 @@ export default function HomePage() {
                 <LandingPage />
             </section>
 
-            <section ref={newSectionRef} className="absolute inset-0 flex items-center justify-center opacity-0">
+            <section
+                ref={newSectionRef}
+                className="absolute inset-0 flex items-center justify-center z-3 bg-background"
+            >
                 NewPage
             </section>
 
             <div
                 ref={transitionRef}
                 aria-hidden="true"
-                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-primary flex justify-center items-center overflow-hidden"
+                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-2 bg-primary flex justify-center items-center overflow-hidden"
                 style={{
                     width: "200vmax",
                     height: "200vmax",
