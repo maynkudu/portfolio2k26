@@ -1,9 +1,12 @@
 "use client";
 
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRef } from "react";
 import { BsGithub, BsInstagram, BsLinkedin, BsTwitterX } from "react-icons/bs";
 
 export const socials = [
@@ -33,9 +36,34 @@ const Footer = () => {
     const pathname = usePathname();
     const validPath = ["/", "/work", "/about"];
 
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    useGSAP(
+        () => {
+            gsap.fromTo(
+                containerRef.current,
+                {
+                    y: -100,
+                },
+                {
+                    y: 0,
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top 90%",
+                        end: "bottom 80%",
+                        scrub: 1,
+                    },
+                }
+            );
+        },
+        {
+            scope: containerRef,
+        }
+    );
+
     if (!validPath.includes(pathname)) return;
     return (
-        <div className="flex bg-foreground text-background p-10 min-h-[50svh] w-full">
+        <div ref={containerRef} className="flex bg-foreground text-background p-10 min-h-[50svh] w-full">
             {/* Title  */}
             <div className="flex flex-col justify-center flex-3/5">
                 {/* Sub Title */}
