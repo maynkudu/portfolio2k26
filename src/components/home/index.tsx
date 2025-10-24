@@ -30,14 +30,11 @@ export default function HomePage() {
                 },
             });
 
-            // Initial setup
             gsap.set(transitionRef.current, { x: "140vw", y: "140vh", rotate: 45 });
             gsap.set(newSectionRef.current, { x: "100vw" });
 
-            // FIRST HALF: move transition div in
             tl.to(transitionRef.current, { x: "0vw", y: "0vh", duration: 0.5 }, 0);
 
-            // ROTATION: complete by midpoint (0 → -45)
             tl.fromTo(
                 contentRef.current,
                 { rotate: 0, scale: 3 },
@@ -45,7 +42,6 @@ export default function HomePage() {
                 0
             );
 
-            // When transition reaches ~50%, fade out first section & slide in new section
             tl.to(sectionRef.current, { scale: 0.7, opacity: 0 }, 0.5);
             tl.to(newSectionRef.current, { x: "0vw" }, 0.5);
             tl.to(transitionRef.current, { scale: 0.7, x: 300, ease: "power3.out", duration: 0.6 }, 0.5);
