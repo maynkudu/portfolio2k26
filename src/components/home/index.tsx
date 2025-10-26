@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useRef } from "react";
+import ParallaxImage from "../common/ParallaxImage";
 import LandingPage from "./landing-page";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -83,15 +84,17 @@ export default function HomePage() {
                         <h2 className="text-[10rem] leading-[0.9] font-bebas text-background">Design & Develop</h2>
                         <div className="flex justify-center">
                             {services.map((image, index) => (
-                                <img
+                                <ParallaxImage
                                     key={index}
+                                    offset={index % 2 == 0 ? 10 : -10}
                                     src={image}
                                     alt={`${index + 1}`}
-                                    className="h-[40rem] w-[35rem] object-cover"
+                                    className="h-[40rem] w-[35rem]"
                                 />
                             ))}
                             {services.map((image, index) => (
-                                <img
+                                <ParallaxImage
+                                    offset={index % 2 == 0 ? -10 : 10}
                                     key={index}
                                     src={image}
                                     alt={`${index + 1}`}
