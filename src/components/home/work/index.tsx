@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,7 +27,7 @@ const work = [
         image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&h=800&fit=crop",
     },
     {
-        title: "TodayInEpisodes",
+        title: "Episodes",
         image: "https://images.unsplash.com/photo-1533928298208-27ff66555d0d?w=1200&h=800&fit=crop",
     },
 ];
@@ -72,35 +72,66 @@ function SwipeSection({ items }: SwipeSectionProps) {
     const contentRef = useRef<HTMLDivElement>(null);
     const titleRefs = useRef<HTMLDivElement[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-
-    useLayoutEffect(() => {
+    useGSAP(() => {
         titleRefs.current.forEach((el, i) => {
             if (!el) return;
 
+            const isCurrent = i === currentIndex;
             const isPrev = i === currentIndex - 1;
             const isNext = i === currentIndex + 1;
-            const isCurrent = i === currentIndex;
+            const isOver = i < currentIndex;
+            const isNotOver = i > currentIndex;
 
-            if (!isPrev && !isNext && !isCurrent) {
-                gsap.to(el, { y: 0, opacity: 0, scale: 0.8, duration: 0.3 });
-                return;
+            if (isCurrent) {
+                gsap.to(el, {
+                    y: 0,
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.2,
+                    ease: "power2.out",
+                    overwrite: "auto",
+                });
+            } else if (isPrev) {
+                gsap.to(el, {
+                    y: -70,
+                    scale: 0.6,
+                    opacity: 0.6,
+                    duration: 0.2,
+                    ease: "power2.out",
+                    overwrite: "auto",
+                });
+            } else if (isNext) {
+                gsap.to(el, {
+                    y: 70,
+                    scale: 0.6,
+                    opacity: 0.6,
+                    duration: 0.2,
+                    ease: "power2.out",
+                    overwrite: "auto",
+                });
+            } else if (isOver) {
+                gsap.to(el, {
+                    y: -140,
+                    scale: 0.5,
+                    opacity: 0,
+                    duration: 0.2,
+                    ease: "power2.out",
+                    overwrite: "auto",
+                });
+            } else if (isNotOver) {
+                gsap.to(el, {
+                    y: 140,
+                    scale: 0.5,
+                    opacity: 0,
+                    duration: 0.2,
+                    ease: "power2.out",
+                    overwrite: "auto",
+                });
             }
-
-            const y = isPrev ? -24 : isNext ? 24 : 0;
-            const scale = isCurrent ? 1 : 0.8;
-            const opacity = isCurrent ? 1 : 0.6;
-
-            gsap.to(el, {
-                y,
-                scale,
-                opacity,
-                duration: 0.3,
-                ease: "power2.out",
-            });
         });
     }, [currentIndex]);
 
-    useLayoutEffect(() => {
+    useGSAP(() => {
         if (!containerRef.current || !contentRef.current) return;
 
         const imageContainers = gsap.utils.toArray<HTMLDivElement>(contentRef.current.querySelectorAll(".image-panel"));
@@ -113,14 +144,28 @@ function SwipeSection({ items }: SwipeSectionProps) {
                 trigger: containerRef.current,
                 start: "top top",
                 end: () => `+=${items.length * window.innerHeight}`,
-                scrub: true,
+                scrub: 0.7,
                 pin: true,
                 anticipatePin: 1,
-                onUpdate: self => {
-                    // Calculate current index based on timeline progress
-                    const progress = self.progress; // 0 -> 1
-                    const index = Math.floor(progress * items.length);
-                    setCurrentIndex(Math.min(index, items.length - 1));
+                onUpdate: () => {
+                    let newIndex = 0;
+                    const halfScreen = window.innerHeight / 2;
+
+                    imageContainers.forEach((panel, i) => {
+                        const rect = panel.getBoundingClientRect();
+
+                        // Change index when the top of the panel is above half the screen
+                        if (rect.top <= halfScreen) {
+                            newIndex = i;
+                        }
+                    });
+
+                    // Prevent index from jumping past last image
+                    newIndex = Math.min(newIndex, items.length - 1);
+
+                    console.log(newIndex);
+
+                    if (newIndex !== currentIndex) setCurrentIndex(newIndex);
                 },
             },
         });
@@ -143,20 +188,22 @@ function SwipeSection({ items }: SwipeSectionProps) {
             {/* Content wrapper */}
             <div className="relative w-full h-full flex items-center justify-center px-20 gap-10">
                 {/* Left Panel */}
-                <div className="flex-1 flex flex-col justify-around items-center gap-12 bg-amber-100 h-[80svh] rounded-2xl">
+                <div className="flex-1 flex flex-col justify-around items-center gap-12 bg-amber-100 h-[80svh] rounded-2xl p-10">
                     {/* Header */}
                     <div>
                         <span className="text-base font-medium tracking-widest uppercase">Featured Work</span>
                     </div>
 
-                    <div className="relative h-32 overflow-hidden flex flex-col items-center justify-center">
+                    <div className="relative flex-1 h-full w-full overflow-hidden flex flex-col items-center justify-center z-10">
                         {items.map((item, i) => (
                             <div
                                 key={i}
                                 ref={el => {
                                     titleRefs.current[i] = el!;
                                 }}
-                                className={cn("absolute text-center transition-all")}
+                                className={cn(
+                                    "absolute text-center text-5xl tracking-tighter font-medium transition-all text-black z-10"
+                                )}
                             >
                                 {item.title}
                             </div>
