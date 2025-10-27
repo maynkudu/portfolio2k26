@@ -2,6 +2,7 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useLenis } from "lenis/react";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,6 +36,8 @@ export const socials = [
 const Footer = () => {
     const pathname = usePathname();
     const validPath = ["/", "/work", "/about"];
+
+    const lenis = useLenis();
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -75,7 +78,10 @@ const Footer = () => {
                     <Image src={"/maynkudu_logo.png"} priority alt="logo" className="object-contain" fill />
                 </div>
             </div>
-            <div className="flex-1/5 max-h-max uppercase flex justify-center items-center gap-1">
+            <div
+                className="flex-1/5 max-h-max max-w-max uppercase flex justify-center items-center gap-1 cursor-pointer"
+                onClick={() => lenis?.scrollTo(0, { duration: 5, easing: x => 1 - Math.pow(1 - x, 3) })}
+            >
                 <span>Scroll Up</span>
                 <ArrowLeft className="h-5 w-5 rotate-45" />
             </div>
