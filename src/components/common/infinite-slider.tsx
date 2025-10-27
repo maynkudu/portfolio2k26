@@ -95,7 +95,6 @@ export default function InfiniteSlider({ images, speed = 100, height = "300px", 
                             priority
                             src={src}
                             alt={`${alt} ${(i % images.length) + 1}`}
-                            loading="lazy"
                         />
                     </div>
                 ))}
