@@ -40,7 +40,7 @@ export default function ParallaxImage({ offset = 20, alt, className = "", ...pro
     return (
         <div ref={containerRef} className={`relative overflow-hidden will-change-transform ${className}`}>
             <div ref={imageRef} className="absolute inset-0 will-change-transform">
-                <Image {...props} alt={alt} fill className="object-cover scale-110" />
+                <Image {...props} alt={alt} priority fill className="object-cover scale-110" />
             </div>
         </div>
     );

@@ -197,7 +197,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ className = "" }) => {
                         <motion.div
                             className="text-xl font-medium"
                             animate={{
-                                color: isOpen ? "white" : isTransparent && isLightBackgroundRoutes ? "white" : "black",
+                                color: isOpen ? "white" : isTransparent && isLightBackgroundRoutes ? "#fff" : "#000",
                             }}
                             transition={{ duration: 0.3 }}
                         >

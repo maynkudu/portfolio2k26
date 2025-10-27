@@ -72,7 +72,7 @@ const Footer = () => {
                     <span>& Developer</span>
                 </div>
                 <div className="relative h-[18em] w-[40em]">
-                    <Image src={"/maynkudu_logo.png"} alt="logo" className="object-contain" fill />
+                    <Image src={"/maynkudu_logo.png"} priority alt="logo" className="object-contain" fill />
                 </div>
             </div>
             <div className="flex-1/5 max-h-max uppercase flex justify-center items-center gap-1">
