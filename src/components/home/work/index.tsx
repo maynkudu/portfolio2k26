@@ -5,30 +5,33 @@ import { cn } from "@/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
+import Link from "next/link";
 import { useRef, useState } from "react";
+import { BsArrowLeft } from "react-icons/bs";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const work = [
     {
         title: "CapsuleCorps",
-        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&h=800&fit=crop",
+        image: services[0],
     },
     {
         title: "Kitse.in",
-        image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&h=800&fit=crop",
+        image: services[1],
     },
     {
         title: "Xernia",
-        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=800&fit=crop",
+        image: services[2],
     },
     {
         title: "UGRFR",
-        image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&h=800&fit=crop",
+        image: services[3],
     },
     {
         title: "Episodes",
-        image: "https://images.unsplash.com/photo-1533928298208-27ff66555d0d?w=1200&h=800&fit=crop",
+        image: services[4],
     },
 ];
 
@@ -71,113 +74,139 @@ function SwipeSection({ items }: SwipeSectionProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const titleRefs = useRef<HTMLDivElement[]>([]);
+    const currentIndexRef = useRef<number>(0);
     const [currentIndex, setCurrentIndex] = useState(0);
-    useGSAP(() => {
-        titleRefs.current.forEach((el, i) => {
-            if (!el) return;
 
-            const isCurrent = i === currentIndex;
-            const isPrev = i === currentIndex - 1;
-            const isNext = i === currentIndex + 1;
-            const isOver = i < currentIndex;
-            const isNotOver = i > currentIndex;
+    useGSAP(
+        () => {
+            titleRefs.current.forEach((el, i) => {
+                if (!el) return;
 
-            if (isCurrent) {
-                gsap.to(el, {
-                    y: 0,
-                    scale: 1,
-                    opacity: 1,
-                    duration: 0.2,
-                    ease: "power2.out",
-                    overwrite: "auto",
-                });
-            } else if (isPrev) {
-                gsap.to(el, {
-                    y: -70,
-                    scale: 0.6,
-                    opacity: 0.6,
-                    duration: 0.2,
-                    ease: "power2.out",
-                    overwrite: "auto",
-                });
-            } else if (isNext) {
-                gsap.to(el, {
-                    y: 70,
-                    scale: 0.6,
-                    opacity: 0.6,
-                    duration: 0.2,
-                    ease: "power2.out",
-                    overwrite: "auto",
-                });
-            } else if (isOver) {
-                gsap.to(el, {
-                    y: -140,
-                    scale: 0.5,
-                    opacity: 0,
-                    duration: 0.2,
-                    ease: "power2.out",
-                    overwrite: "auto",
-                });
-            } else if (isNotOver) {
-                gsap.to(el, {
-                    y: 140,
-                    scale: 0.5,
-                    opacity: 0,
-                    duration: 0.2,
-                    ease: "power2.out",
-                    overwrite: "auto",
-                });
-            }
-        });
-    }, [currentIndex]);
+                const isCurrent = i === currentIndex;
+                const isPrev = i === currentIndex - 1;
+                const isNext = i === currentIndex + 1;
+                const isOver = i < currentIndex;
+                const isNotOver = i > currentIndex;
+
+                if (isCurrent) {
+                    gsap.to(el, {
+                        y: 0,
+                        scale: 1,
+                        opacity: 1,
+                        duration: 0.2,
+                        // ease: "power2.out",
+                    });
+                } else if (isPrev) {
+                    gsap.to(el, {
+                        y: -70,
+                        scale: 0.6,
+                        opacity: 0.6,
+                        duration: 0.2,
+                        // ease: "power2.out",
+                    });
+                } else if (isNext) {
+                    gsap.to(el, {
+                        y: 70,
+                        scale: 0.6,
+                        opacity: 0.6,
+                        duration: 0.2,
+                        // ease: "power2.out",
+                    });
+                } else if (isOver) {
+                    gsap.to(el, {
+                        y: -140,
+                        scale: 0.5,
+                        opacity: 0,
+                        duration: 0.2,
+                        // ease: "power2.out",
+                    });
+                } else if (isNotOver) {
+                    gsap.to(el, {
+                        y: 140,
+                        scale: 0.5,
+                        opacity: 0,
+                        duration: 0.2,
+                        // ease: "power2.out",
+                    });
+                }
+            });
+        },
+        { scope: containerRef, dependencies: [currentIndex] }
+    );
 
     useGSAP(() => {
         if (!containerRef.current || !contentRef.current) return;
 
         const imageContainers = gsap.utils.toArray<HTMLDivElement>(contentRef.current.querySelectorAll(".image-panel"));
+        const innerImages = gsap.utils.toArray<HTMLImageElement>(contentRef.current.querySelectorAll(".inner-image"));
 
-        gsap.set(imageContainers, { yPercent: 100, opacity: 1 });
+        gsap.set(imageContainers, { yPercent: 100 });
         gsap.set(imageContainers[0], { yPercent: 0 });
+
+        const totalPanels = imageContainers.length;
+        const durationPerPanel = 1;
+        const pauseDuration = 0.5;
 
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: () => `+=${items.length * window.innerHeight}`,
+                end: () => `+=${(totalPanels + pauseDuration) * window.innerHeight}`,
                 scrub: 0.7,
                 pin: true,
                 anticipatePin: 1,
-                onUpdate: () => {
-                    let newIndex = 0;
-                    const halfScreen = window.innerHeight / 2;
+                onUpdate: self => {
+                    const progress = self.progress;
+                    const containerHeight = window.innerHeight;
+                    const visibilityThreshold = containerHeight * 0.5;
 
+                    let newIndex = 0;
                     imageContainers.forEach((panel, i) => {
                         const rect = panel.getBoundingClientRect();
-
-                        // Change index when the top of the panel is above half the screen
-                        if (rect.top <= halfScreen) {
+                        if (rect.top <= visibilityThreshold && rect.bottom >= visibilityThreshold) {
                             newIndex = i;
                         }
                     });
 
-                    // Prevent index from jumping past last image
-                    newIndex = Math.min(newIndex, items.length - 1);
-
-                    console.log(newIndex);
-
-                    if (newIndex !== currentIndex) setCurrentIndex(newIndex);
+                    if (newIndex !== currentIndexRef.current) {
+                        currentIndexRef.current = newIndex;
+                        setCurrentIndex(newIndex);
+                    }
                 },
             },
         });
 
         imageContainers.forEach((panel, i) => {
-            if (i === 0) return; // first image already in view
-            tl.to(panel, { yPercent: 0, ease: "none" }, i * 1); // stagger each panel
+            if (i === 0) return;
+
+            // Slide the next panel in
+            tl.to(
+                panel,
+                {
+                    yPercent: 0,
+                    ease: "power2.inOut",
+                    duration: durationPerPanel,
+                },
+                (i - 1) * durationPerPanel
+            );
+            const img = innerImages[i];
+
+            tl.fromTo(
+                img,
+                { y: -500, scale: 1 },
+                {
+                    y: 0,
+                    scale: 1.05,
+                    ease: "power1.inOut",
+                    duration: durationPerPanel - 0.1,
+                },
+                (i - 1) * durationPerPanel
+            );
         });
 
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
+        tl.to({}, { duration: pauseDuration });
+
+        return () => ScrollTrigger.getAll().forEach(t => t.kill());
     }, [items.length]);
 
     return (
@@ -230,28 +259,32 @@ function SwipeSection({ items }: SwipeSectionProps) {
                 </div>
 
                 {/* Right Panel - Image Carousel */}
-                <div className="flex-1 relative h-[80svh] flex items-center justify-center overflow-hidden">
+                <div className="flex-1 relative h-[80svh] flex items-center justify-center rounded-4xl overflow-hidden antialiased">
                     <div ref={contentRef} className="relative w-full h-full">
                         {items.map((item, i) => (
                             <div
                                 key={i}
                                 className="image-panel absolute inset-0 w-full h-full flex items-center justify-center"
                             >
-                                <div className="relative w-full h-full flex items-center justify-center">
-                                    <img
-                                        src={services[i] || "/placeholder.svg"}
+                                <div className="relative w-full h-full flex items-center justify-center overflow-hidden rounded-4xl scale-101">
+                                    <Image
+                                        src={item.image || "/placeholder.svg"}
                                         alt={item.title}
-                                        className="w-full h-full object-cover rounded-2xl"
+                                        fill
+                                        className="w-full h-full object-cover rounded-4xl inner-image"
                                     />
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 rounded-b-2xl">
-                                        <h3 className="text-white text-2xl font-bold mb-2">{item.title}</h3>
-                                        <p className="text-white/80 text-sm">
-                                            Explore our latest work and creative solutions
-                                        </p>
-                                    </div>
                                 </div>
                             </div>
                         ))}
+                        <div className="absolute bottom-0 left-0 right-0 text-white flex bg-gradient-to-t from-black/80 to-transparent p-8 rounded-b-4xl">
+                            <Link
+                                href={`/work/${work[currentIndexRef.current].title.toLocaleLowerCase()}`}
+                                className="border-b border-b-white flex justify-center items-center"
+                            >
+                                <BsArrowLeft className="rotate-45 h-4 w-4" />
+                                <p className="text-white/80 text-sm">Visit Now</p>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
