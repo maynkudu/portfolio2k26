@@ -1,9 +1,11 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useLenis } from "lenis/react";
 import { ArrowLeft } from "lucide-react";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -38,6 +40,7 @@ const Footer = () => {
     const validPath = ["/", "/work", "/about"];
 
     const lenis = useLenis();
+    const { theme } = useTheme();
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -75,7 +78,13 @@ const Footer = () => {
                     <span>& Developer</span>
                 </div>
                 <div className="relative h-[18em] w-[40em]">
-                    <Image src={"/maynkudu_logo.png"} priority alt="logo" className="object-contain" fill />
+                    <Image
+                        src={"/maynkudu_logo.png"}
+                        priority
+                        alt="logo"
+                        className={cn("object-contain", theme == "dark" && "invert-100")}
+                        fill
+                    />
                 </div>
             </div>
             <div
